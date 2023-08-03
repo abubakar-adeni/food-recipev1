@@ -126,7 +126,7 @@ npm run build
 
 # Related Project
 
-:rocket: [`Frontend Recipe Food`](https://github.com/abubakar-adeni/hirejob_fe)
+:rocket: [`Frontend Recipe Food`](https://github.com/abubakar-adeni/food-recipev1)
 
 :rocket: [`Backend Recipe Food`](https://github.com/abubakar-adeni/backend-recipes)
 
