@@ -1,152 +1,275 @@
 import "../styles/Home.css";
-import "animate.css";
-import Navbar from "../components/navbar";
-import ScrollProgress from "../components/ScrollProgress";
-import Footer from "../components/footer";
-import PopularMenu from "../components/Popular-menu";
-import { Link } from "react-router-dom";
-import foodList from "../menu.json";
 
+import Navbar from "../components/navbar";
+import Footer from "../components/footer";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { storeRecipes } from "../reducers/recipesSlice";
+
+import axios from "axios";
 
 function App() {
+  const [recipeList, setRecipeList] = useState([]);
+  const [newRecipeList, setNewRecipeList] = useState([]);
+  const dispatch = useDispatch();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
+  const totalPages = Math.ceil(recipeList.length / itemsPerPage);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = recipeList.slice(startIndex, endIndex);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const [keyword, setKeyword] = useState("");
+
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_BASE_URL}/recipes?popular=popular`
+        );
+        setRecipeList(response?.data?.data);
+        dispatch(storeRecipes(response?.data?.data));
+      } catch (error) {
+        console.error("Failed to fetch recipes:", error);
+      }
+    };
+    const fetchNewRecipes = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_BASE_URL}/recipes?sortType=desc`
+        );
+        setNewRecipeList(response?.data?.data);
+      } catch (error) {
+        console.error("Failed to fetch recipes:", error);
+      }
+    };
+    fetchNewRecipes();
+    fetchRecipes();
+  }, []);
+
+  const handleSearch = () => {
+    axios
+      .get(`${process.env.REACT_APP_BASE_URL}/recipes`, {
+        params: {
+          keyword,
+          sortType: "asc",
+        },
+      })
+      .then((response) => setRecipeList(response?.data?.data));
+  };
+
   return (
     <div className="App">
-      <Navbar />
-      <ScrollProgress />  
-      <div className="right-layer animate__animated animate__fadeIn"></div>
+      <header>
+        <Navbar />
 
-      <div className="container mt-4" style={{ height: "100vh" }}>
-        <div className="row flex-column-reverse gap-5 flex-lg-row py-5">
-          <div className="col-8 col-lg-4 align-self-center animate__animated animate__fadeInLeft">
-            <h1
-              className="text-center text-lg-start fw-bolder fs-1 mb-4"
-              style={{ color: "#2e266f" }}
-            >
-              Discover Recipe & Delicious Food
-            </h1>
-            <form action="#" method="post">
-              <input
-                type="text"
-                className="form-control form-control-lg"
-                placeholder="Search Restaurant, Food"
-              />
-            </form>
-          </div>
-          <div className="col text-center text-lg-end animate__animated animate__fadeInRight">
-            <img
-              src="./img/Rectangle-313.png"
-              alt="food"
-              style={{ width: "55%" }}
-            />
-          </div>
-        </div>
-      </div>
-
-      <div
-        className="container d-flex align-items-center my-5 animate__animated animate__flipInX"
-        style={{ height: "80px" }}
-      >
-        <div
-          className="vr"
-          style={{ width: "15px", backgroundColor: "#efc81a", opacity: "100%" }}
-        ></div>
-        <p className="m-0 ms-3 fs-1 fw-semibold" style={{ color: "#3f3a3a" }}>
-          Popular For You!
-        </p>
-      </div>
-
-      <div className="container">
-        <div className="row flex-column-reverse gap-5 flex-lg-row py-5">
-          <div className="col text-center text-lg-start animate__animated animate__fadeInLeft">
-            <img src="./img/Group-1.png" alt="food" style={{ width: "80%" }} />
-          </div>
-          <div className="col-8 col-lg-4 d-flex flex-column d-lg-block justify-content-center align-self-center animate__animated animate__fadeInRight">
-            <h2
-              className="text-center text-lg-start fs-1"
-              style={{ color: "#3f3a3a" }}
-            >
-              Roti Bakar Asgar (Garut)
-            </h2>
-            <hr className="w-25 opacity-100" />
-            <p
-              style={{ color: "#3f3a3a" }}
-              className="text-center text-lg-start"
-            >
-              Roti Bakar Asgar ! Rasakan kelezatan roti bakar kami yang gurih dan renyah,
-               dengan berbagai pilihan topping yang menggoda selera!
-            </p>
-            <a
-              href="./details/Roti-Bakar-Asgar"
-              className="btn message btn-lg"
-              style={{ backgroundColor: "#efc81a", color: "#fff" }}
-            >
-              Learn More
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div
-        className="container d-flex align-items-center my-5 animate__animated animate__flipInX"
-        style={{ height: "80px" }}
-      >
-        <div
-          className="vr"
-          style={{ width: "15px", backgroundColor: "#efc81a", opacity: "100%" }}
-        ></div>
-        <p className="m-0 ms-3 fs-1 fw-semibold" style={{ color: "#3f3a3a" }}>
-          New Recipe
-        </p>
-        <div className="left-layer"></div>
-      </div>
-
-      <div className="container">
-        <div className="row flex-column-reverse gap-5 flex-lg-row py-5">
-          <div className="col text-center text-lg-start animate__animated animate__fadeInLeft">
-            <img
-              src="./img/burgerking.png"
-              alt="food"
-              style={{ width: "80%" }}
-            />
-          </div>
-          <div className="col-8 col-lg-4 d-flex flex-column d-lg-block justify-content-center align-self-center animate__animated animate__fadeInRight">
-            <h2
-              className="text-center text-lg-start fs-1"
-              style={{ color: "#3f3a3a" }}
-            >
-              Burger King (United State)
-            </h2>
-            <hr className="w-25 opacity-100" />
-            <p
-              style={{ color: "#3f3a3a" }}
-              className="text-center text-lg-start"
-            >
-              Pengalaman sensasi burger yang luar biasa! Nikmati kelezatan daging sapi panggang dengan cita rasa yang meledak di mulut, disajikan di antara roti empuk yang lezat. 
-              Padukan dengan pilihan topping segar dan saus istimewa yang membuat lidah bergoyang! 
-            </p>
-            <a
-              href="./details/Burger-King"
-              className="btn message btn-lg"
-              style={{ backgroundColor: "#efc81a", color: "#fff" }}
-            >
-              Learn More
-            </a>
-          </div>
-        </div>
-      </div>
-
-       <section id="popular-recipe">
         <div className="container">
-          <h2 className="mb-5 subtitle">Popular Recipe</h2>
+          <div className="row flex-column flex-lg-row mt-5">
+            <div className="col-md-6 col-xs-10 align-self-center order-2 order-md-1 ">
+              <h2 className="text-center text-lg-start fw-bolder fs-1 text-primary mt-5">
+                Discover Recipe & <br />
+                Delicious Food
+              </h2>
+              <div className="search-bar">
+                <input
+                  className="search-box form-control form-control-lg mt-5"
+                  placeholder="search restaurant, food"
+                  onChange={(e) => setKeyword(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      window.location.href = "#popular-recipe";
+                      handleSearch();
+                    }
+                  }}
+                />
+              </div>
+            </div>
+            <div className="col-1"></div>
+            <div className="col-md-4 col-lg-4 col-xs-8 col-sm-8 order-1 order-md-1">
+              <img
+                className="rounded img-fluid mx-auto d-block"
+                src="/img/1.jpg"
+                alt="img-header"
+              />
+            </div>
+          </div>
+        </div>
 
-          <div className="row">
-            {foodList.menu.map((item) => (
-              <PopularMenu title={item?.title} image={item?.image} />
+        <div className="bg_yellow"></div>
+      </header>
+
+      <section id="popular-for-you">
+        <div className="container">
+          <h2 className="mb-5 subtitle">Popular For You !</h2>
+          <div
+            className="row flex-column flex-lg-row col-md-12 col-xs-10 align-items-center"
+            style={{ marginTop: "100px" }}
+          >
+            {recipeList.slice(1, 2).map((item) => (
+              <div className="row align-items-center" key={item.id}>
+                <div className="col">
+                  <img
+                    className="img-fluid rounded"
+                    style={{
+                      objectFit: "cover",
+                      width: "100%",
+                      height: "50vh",
+                    }}
+                    src={item.photo}
+                    alt="img-menu"
+                  />
+                </div>
+                <div className="col-md-2"></div>
+                <div className="col-md-5 col-xs-10 d-flex flex-column d-lg-block justify-content-center align-self-center">
+                  <h3
+                    className="text-center text-lg-start mt-5"
+                    style={{ textTransform: "capitalize" }}
+                  >
+                    {item.tittle}
+                  </h3>
+                  <h6 className="text-center text-lg-start">{item.category}</h6>
+                  <p>{item.description}</p>
+                  <div className="text-center text-lg-start">
+                    <Link
+                      to={`/details/${item.tittle
+                        ?.toLowerCase()
+                        ?.split(" ")
+                        ?.join("-")}`}
+                      state={{ data: item }}
+                      className="btn btn-warning shadow"
+                    >
+                      Go to Details
+                    </Link>
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
         </div>
       </section>
-            <Footer />
+
+      <section id="new_recipe">
+        <div className="container">
+          <h2 className="mb-5 subtitle">New Recipe</h2>
+          <div
+            className="row flex-column flex-lg-row col-md-12 col-xs-10 align-items-center" // Add align-items-center class here
+            style={{ marginTop: "100px" }}
+          >
+            {newRecipeList.slice(0, 1).map((item) => (
+              <div className="row align-items-center" key={item.id}>
+                <div className="col">
+                  <img
+                    className="img-fluid rounded"
+                    src={item.photo}
+                    style={{
+                      objectFit: "cover",
+                      width: "100%",
+                      height: "50vh",
+                    }}
+                    alt="img-menu1"
+                  />
+                </div>
+                <div className="col-md-2"></div>
+                <div className="col-md-5 col-xs-10 d-flex flex-column d-lg-block justify-content-center align-self-center">
+                  <h3
+                    className="text-center text-lg-start mt-5"
+                    style={{ textTransform: "capitalize" }}
+                  >
+                    {item.tittle}
+                  </h3>
+                  <h6 className="text-center text-lg-start">{item.category}</h6>
+                  <p>{item.description}</p>
+                  {/* <hr
+                    className="d-lg-block mx-auto text-lg-start"
+                    style={{ width: "20%" }}
+                  /> */}
+                  <div className="text-center text-lg-start">
+                    <Link
+                      to={`/details/${item.tittle
+                        ?.toLowerCase()
+                        ?.split(" ")
+                        ?.join("-")}`}
+                      state={{ data: item }}
+                      className="btn btn-warning shadow"
+                    >
+                      Go to Details
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="bg_yellow_2"></div>
+      </section>
+
+      <section id="popular-recipe">
+        <div className="container pt-5 mb-5">
+          <h2 className="mb-5 subtitle ">Popular Recipe</h2>
+
+          <div className="row text-decoration-none">
+            {currentItems.map((item) => (
+              <div className="col-md-3 col-xs-12 col-sm-12 mb-4" key={item.id}>
+                <Link
+                  className="text-decoration-none"
+                  to={`/details/${item.tittle
+                    ?.toLowerCase()
+                    ?.split(" ")
+                    ?.join("-")}`}
+                  state={{ data: item }}
+                >
+                  <div
+                    className="menu-background text-decoration-none"
+                    style={{
+                      backgroundImage: `url(${item.photo})`,
+                    }}
+                  >
+                    <h3
+                      className="popular-menu-list"
+                      style={{ textTransform: "capitalize" }}
+                    >
+                      {item.tittle}
+                    </h3>
+                  </div>
+                </Link>
+              </div>
+            ))}
+          </div>
+          {/* Pagination */}
+          <ul className="pagination d-flex justify-content-center">
+            {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+              (pageNumber) => (
+                <li
+                  key={pageNumber}
+                  className={`page-item ${
+                    pageNumber === currentPage ? "active" : ""
+                  }`}
+                >
+                  <button
+                    className="page-link me-2"
+                    style={{
+                      backgroundColor: "#ffc107",
+                      borderColor: "#ffc107",
+                      color: "#fff",
+                    }}
+                    onClick={() => handlePageChange(pageNumber)}
+                  >
+                    {pageNumber}
+                  </button>
+                </li>
+              )
+            )}
+          </ul>
+        </div>
+      </section>
+
+      <Footer className="mt-0" />
     </div>
   );
 }

@@ -1,147 +1,133 @@
 <br />
 <p align="center">
-  <h3 align="center">Pijar Food</h3>
+  <div align="center">
+    <img height="150" src="./documentation/logo-recipe.png" alt="recipe-mama" border="0"/>
+  </div>
+  <h3 align="center">Recipe's Mama (Recipe App)</h3>
+  <p align="center">
+    <a href="https://github.com/abubakar-adeni/react-food"><strong>Explore the docs »</strong></a>
+    <br />
+    <a href="https://react-food-fawn.vercel.app/">View Demo</a>
+  </p>
 </p>
 
-<!-- ABOUT THE PROJECT -->
+## Table of Contents
 
-## About The Project
+- [About The Project](#about-the-project)
+  - [Built With](#built-with)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Screenshots](#screenshots)
+- [Related Project](#related-project)
 
-Pijar Food is a platform for viewing and sharing food recipes developed with React.js for the front-end and integrated into the PostgreSQL database using Express.js as the back-end for the platform.
+# About The Project
 
-### Project Structure
+Recipe Mama is a recipe website that makes it easy for users to access food recipes with a delightful experience. Users can create an account and post their own recipes, and they can also bookmark their favorite recipes.
 
+## Built With
+
+These are the libraries and service used for building this backend API
+
+- ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
+- ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
+- ![Bootstrap](https://img.shields.io/badge/bootstrap-%238511FA.svg?style=for-the-badge&logo=bootstrap&logoColor=white)
+- ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+- ![Redux](https://img.shields.io/badge/redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white)
+- [Sweetalert2](https://sweetalert2.github.io)
+
+# Getting Started
+
+## Prerequisites
+
+You'll need these programs installed before proceeding to installation
+
+- [Git](https://git-scm.com/downloads)
+- [Node.js](https://nodejs.org/en/download)
+
+This project requires [pijar-food-be](https://github.com/abubakar-adeni/pijar-food-be) to function properly, follow the steps provided in the readme to install and run the backend API
+
+## Installation
+
+Follow this steps to run the server locally
+
+1. Clone this repository
+
+```sh
+git clone https://github.com/abubakar-adeni/react-food.git
 ```
-|── FE-REACT_PIJARFOOD
-   |── public          # Public Assets
-   |── documentation   # Screenshots of the application
-   |── src             # Project source code
-       |── components  # Application components
-       |── pages       # Pages source code
-       |── reducers    # State management
-       |── styles      # Application CSS
-   |── .env            # Environment variables
-   |── .gitignore      # Files that should be ignored
-   |── README.md       # Readme
+
+2. Change directory to hirejob-frontend
+
+```sh
+cd react-food
 ```
 
-### Features
+3. Install all of the required modules
 
-<ul>
-<li>User authentication (login, register)</li>
-<li>View recipes and their details</li>
-<li>Add new recipes</li>
-<li>Like and comment/review recipes</li>
-<li>Delete recipes</li>
-<li>Edit profile</li>
-</ul>
+```sh
+npm install
+```
 
-### Screenshots
+4. Create and configure `.env.local` file in the root directory, example env are provided in [.env.local.example](./.env.local.example)
+
+```env
+NEXT_PUBLIC_HOST=[ Backend URL ]
+```
+
+5. Run this command to run the server in development environment
+
+```sh
+npm run start
+```
+
+- Run this command to build this website into production ready
+
+```sh
+npm run build
+```
+
+# Screenshots
+
+<img width="840" src="./documentation/all-devices.png" border="0" alt="Landing Page" />
+<br>
 
 <table>
-<tr>
-<td><img width="350px" src="./documentation/login.jpg" border="0" alt="Login" /></td>
-    <td> <img width="350px" src="./documentation/register.jpg" border="0"  alt="Register" /></td>
-    <td> <img width="350px" src="./documentation/forgotpassword.jpg" border="0"  alt="ForgotPassword" /></td>
-</tr>
-<td><img width="350px" src="./documentation/home.jpg" border="0" alt="home" /></td>
-    <td> <img width="350px" src="./documentation/details.jpg" border="0"  alt="detail" /></td>
-</tr>
-<td><img width="350px" src="./documentation/addrecipe.jpg" border="0" alt="addrecipe" /></td>
-    <td> <img width="350px" src="./documentation/profile.jpg" border="0"  alt="profile" /></td>
-</tr>
-<td><img width="350px" src="./documentation/profileLikedRecipe.jpg" border="0" alt="likedrecipe" /></td>
-    <td> <img width="350px" src="./documentation/editprofile.jpg" border="0"  alt="editprofile" /></td>
+ <tr>
+    <td><img width="350px" src="./documentation/login.png" border="0" alt="Login" /></td>
+    <td> <img width="350px" src="./documentation/register.png" border="0"  alt="Register" /></td>
+  </tr>
+  <tr>
+    <td>Login</td>
+    <td>Register</td>
+  </tr>
+  <tr>
+    <td><img width="350px" src="./documentation/edit-profil.png" border="0" alt="Profile" /> </td>
+    <td><img width="350px" src="./documentation/addrecipe.png" border="0" alt="Hire" /> </td>
+  </tr>
+   <tr>
+    <td>Edit Profile</td>
+    <td>Add Recipe</td>
+  </tr>
+  <tr>
+    <td><img width="350px" src="./documentation/landingpage.png" border="0" alt="Hire" /> </td>
+    <td><img width="350px" src="./documentation/detail-recipe.png" border="0" alt="Hire" /> </td>
+    </tr>
+  <tr>
+    <td>Landing Page</td>
+    <td>Detail Recipe</td>
+  </tr>
+  <tr> 
+ <td><img width="350px" src="./documentation/my-recipe.png" border="0" alt="Hire" /> </td>
+    </tr>
+  <tr>
+    <td>My Recipe</td>
 </table>
 
-## Below are lists of modules used in this application:
+# Related Project
 
-- [React JS](https://reactjs.org/)
-- [Redux](https://redux.js.org/)
-- [Bootstrap](https://getbootstrap.com/)
-- [Axios](https://axios-http.com/)
-- [Dotenv](https://www.npmjs.com/package/dotenv)
-- [SweetAlert2](https://sweetalert2.github.io/)
+:rocket: [`Frontend Recipe Food`](https://github.com/abubakar-adeni/hirejob_fe)
 
-# Getting Started with Create React App
+:rocket: [`Backend Recipe Food`](https://github.com/abubakar-adeni/backend-recipes)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-### `npm -i`
-
-install the required modules
-
-## In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
-## Related Project
-
-:rocket: [`Backend`](https://github.com/nluthfis/PijarFood)
-
-:rocket: [`React native`](https://github.com/nluthfis/pijar_food_mobile)
-
-:rocket: [`Demo`](https://fe-react-pijarfood.vercel.app)
+:rocket: [`Demo Recipe Food`](https://react-food-fawn.vercel.app/)

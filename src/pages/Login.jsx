@@ -1,92 +1,164 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-
-import "../styles/Auth.css";
+import Swal from "sweetalert2";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addAuth } from "../reducers/auth";
+import "../styles/auth.css";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function Login() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("auth")) {
+      navigate("/profile");
+    }
+  }, []);
+
+  const handeLogin = () => {
+    setIsLoading(true);
+    axios
+      .post(`${process.env.REACT_APP_BASE_URL}/auth/login`, {
+        email: email,
+        password: password,
+      })
+      .then((result) => {
+        Swal.fire({
+          title: "Login Success",
+          text: "Login Success",
+          icon: "success",
+        }).then(() => {
+          localStorage.setItem("auth", "true");
+          localStorage.setItem("token", result?.data?.token);
+          dispatch(addAuth(result.data));
+          navigate("/profile");
+        });
+      })
+      .catch((error) => {
+        let errorMessage = "Something went wrong";
+        if (error.response && error.response.status === 401) {
+          errorMessage = "Invalid email or password";
+        } else if (
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+        ) {
+          errorMessage = error.response.data.message;
+        }
+        Swal.fire({
+          title: "Login Failed",
+          text: errorMessage,
+          icon: "error",
+        });
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  const handleTogglePassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div>
-     <div className="row flex-column flex-md-row">
-      <div className="col p-4 vh-100 left-col d-flex justify-content-center align-items-center">
-        <img
-          className="image-fluid w-25 animate__animated animate__fadeInUp"
-          src="../img/Group-697.png"
-          alt="Mama-Recipe-Logo"
-        />
-      </div>
-      <div className="col p-4 d-flex flex-column justify-content-center m-0 animate__animated animate__fadeInDown">
-        <h1 className="text-center">Welcome</h1>
-        <p className="text-center text-secondary">
-          Log in into your existing account
-        </p>
-        <div className="row m-0 p-0 justify-content-start justify-content-md-center">
-          <div className="col col-md-8">
-            <hr />
-            <form action="#" method="post">
-              <div className="mb-3">
-                <label htmlFor="email" className="form-label">E-mail</label>
-                <input
-                  type="email"
-                  className="form-control"
-                  id="email"
-                  name="email"
-                  placeholder="E-mail"
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="password" className="form-label">Password</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  id="password"
-                  name="password"
-                  placeholder="Password"
-                />
-              </div>
-              <div className="mb-3 form-check">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="termsConditions"
-                  name="termsConditions"
-                />
-                <label className="form-check-label" htmlFor="termsConditions">
-                  I agree to terms & conditions
-                </label>
-              </div>
-              <div className="d-grid">
-                <button 
-                  type="submit"
-                  className="btn message"
-                  style={{ backgroundColor: '#efc81a', color: 'white' }}
+      <div className="row g-0">
+        <div className="col-6 left vh-100 d-flex justify-content-center align-items-center">
+          <img className="logo" src="/img/logo.png" alt="img-logo" />
+        </div>
+        <div className="col-md-5 col-xs-10 right d-flex flex-column justify-content-center">
+          <div className="container">
+            <h1 className="text-center mt-3">Welcome</h1>
+            <p className="text-center text-secondary">
+              Log in into your existing account
+            </p>
+            <div className="row justify-content-center">
+              <div className="col col-9">
+                <form
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                  }}
                 >
-                  Log in
-                </button>
+                  <div className="mb-3">
+                    <label htmlFor="email" className="form-label">
+                      E-mail
+                    </label>
+                    <input
+                      type="email"
+                      className="form-control"
+                      id="email"
+                      name="email"
+                      placeholder="E-mail"
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="password" className="form-label">
+                      Password
+                    </label>
+                    <div className="input-group">
+  
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          className="form-control"
+                          id="password"
+                          name="password"
+                          placeholder="Password"
+                          autoComplete="off"
+                          onChange={(e) => setPassword(e.target.value)}
+                        />
+                        <button
+                    className="btn btn-outline-warning"
+                    type="button"
+                    onClick={handleTogglePassword}
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+
+                      
+                    </div>
+                  </div>
+
+                  <div className="d-grid">
+                    <button
+                      type="submit"
+                      className="btn btn-warning mt-3"
+                      onClick={handeLogin}
+                    >
+                      {isLoading ? "Loading..." : "Log in"}
+                    </button>
+                  </div>
+                  <p className="text-end fs-6 fw-medium mt-3">
+                    <a
+                      href="/ForgotPassword"
+                      className="text-decoration-none text-black text-body-secondary"
+                    >
+                      Forgot Password?
+                    </a>
+                  </p>
+                </form>
               </div>
-              <p className="text-end fs-6 fw-medium mt-3">
-                <a
-                  href="./forgot-password.html"
-                  className="text-decoration-none text-black text-body-secondary"
-                >
-                  Forgot Password?
-                </a>
-              </p>
-            </form>
+            </div>
+            <p className="text-center mt-2">
+              Don't have an account?
+              <Link
+                to="/register"
+                className="text-decoration-none"
+                style={{ color: " #efc81a", fontWeight: "bold" }}
+              >
+                Register
+              </Link>
+            </p>
           </div>
         </div>
-        <p className="text-center">
-          Don't have an account?
-          
-          <a
-            href="/register"
-            className="text-decoration-none"
-            style={{ color: '#efc81a' }}
-          > {" "}
-             Sign up
-          </a>
-        </p>
       </div>
-    </div>
     </div>
   );
 }

@@ -1,83 +1,84 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
-import "../styles/Home.css";
-
+import "../styles/Navbar.css";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../reducers/auth";
 
 function Navbar() {
+  const isAuthenticated = localStorage.getItem("auth");
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state?.auth);
+
+  const handleLogout = () => {
+    localStorage.clear();
+    dispatch(logout());
+    window.location.href = "/login";
+  };
+
   return (
-    <>
-    <nav className="navbar navbar-expand-lg pt-4 animate__animated animate__fadeInDown">
-      <div className="container container-fluid justify-content-end">
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0 gap-lg-4 fw-semibold">
-            <li className="nav-item">
-              <Link
-                className="nav-link text-decoration-underline text-center"
-                aria-current="page"
-                to="/"
-                style={{ color: '#2e266f' }}
-              >
-                Home
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-                className="nav-link text-center"
-                to="./addrecipe"
-                style={{ color: '#2e266f' }}
-              >
-                Add Recipe
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-                className="nav-link text-center"
-                to="./profile"
-                style={{ color: '#2e266f' }}
-              >
-                Profile
-              </Link>
-            </li>
-            <li className="nav-item d-lg-none d-block">
-              <Link
-                className="nav-link text-center"
-                to="/login"
-                style={{ color: '#2e266f' }}
-              >
-                Login
-              </Link>
-            </li>
-          </ul>
-          <div>
-            <Link
-              to="/login"
-              className="text-decoration-none d-flex justify-content-end align-items-center gap-3 d-lg-flex d-none fw-semibold"
-              style={{ color: '#fff' }}
+    <div>
+      <div className="container align-item-center mt-4">
+        <nav className="navbar navbar-expand-lg navbar-light">
+          <div className="container">
+            <div>
+            </div>
+
+            <button
+              type="button"
+              className="navbar-toggler"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarCollapse"
             >
-              <img
-                src="./img/user-icon.png"
-                alt="user-icon"
-                style={{ width: '15%' }}
-              />
-              Login
-            </Link>
+              <span className="navbar-toggler-icon"></span>
+            </button>
+
+            <div className="collapse navbar-collapse" id="navbarCollapse">
+              <div className="navbar-nav">
+                <Link to="/" className="nav-item nav-link active">
+                  Home
+                </Link>
+                <Link to="/addrecipe" className="nav-item nav-link">
+                  Add Recipe
+                </Link>
+                <Link to="/profile" className="nav-item nav-link">
+                  Profile
+                </Link>
+              </div>
+              <div className="navbar-nav ms-auto">
+                {isAuthenticated ? (
+                  <>
+                    <div className="navbar-nav">
+                      <Link
+                        to="/EditProfile"
+                        className="nav-item nav-link active"
+                      >
+                        Edit Profile
+                      </Link>
+                      <Link
+                        to="/"
+                        className="nav-item nav-link active "
+                        onClick={handleLogout}
+                      >
+                        Logout
+                      </Link>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <Link to="/login" className="nav-item nav-link">
+                      Login
+                    </Link>
+                    <Link to="/register" className="nav-item nav-link">
+                      Register
+                    </Link>
+                  </>
+                )}
+              </div>
+            </div>
           </div>
-        </div>
+        </nav>
       </div>
-    </nav>
-    </>
+    </div>
   );
 }
 

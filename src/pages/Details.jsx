@@ -1,58 +1,160 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import "../styles/Details.css";
-
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
-
-import foodList from "../menu.json";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import Comment from "../components/Comment";
+import { MdVideoLibrary } from "react-icons/md";
 
 function Details() {
-  const detailMenu = foodList.menu;
+  const [currentList, setCurrentList] = useState(null);
   const location = useLocation();
-  const [currentList, setCurrentList] = React.useState(null);
+  const [liked, setLiked] = useState(false);
+  const [liked_by, setLiked_by] = useState([]);
+  const auth = useSelector((state) => state?.auth);
+  const recipesData = location.state;
+  const [loginMessage, setLoginMessage] = useState("");
 
-  React.useEffect(() => {
-    const currentSlug = location?.pathname?.split("/")[2];
+  useEffect(() => {
     window.scrollTo(0, 0);
-    setCurrentList(detailMenu.find((res) => res.slug === currentSlug));
+    const like = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_BASE_URL}/getlikes?recipe_id=${recipesData.data.id}`
+        );
+        if (!response.data.data || response.data.data.length === 0) {
+          setLiked(false);
+        } else {
+          setLiked_by(response.data.data);
+          const userId = auth.auth.data[0].id;
+          const isUserIdIncluded = response.data.data.some(
+            (user_id) => user_id.user_id === userId
+          );
+          setLiked(isUserIdIncluded !== undefined ? isUserIdIncluded : false);
+        }
+      } catch (error) {
+        console.log(error);
+        setLiked(false);
+      }
+    };
+    like();
   }, []);
-  console.log(currentList);
+
+  const handleLikeButtonPress = async () => {
+    try {
+      if (!auth || !localStorage.getItem("token")) {
+        setLiked(false);
+        setLoginMessage("Please login first");
+        return;
+      }
+      if (liked === true) {
+        const token = auth.token;
+        await axios.delete(
+          `${process.env.REACT_APP_BASE_URL}/unlikes?recipe_id=${recipesData.data.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setLiked(false);
+      } else {
+        const token = auth.token;
+        await axios.post(
+          `${process.env.REACT_APP_BASE_URL}/likes?recipe_id=${recipesData.data.id}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setLiked(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <Navbar />
       <section id="content">
-        <div class="container py-5">
-          <h1 class="text-center text-primary">{currentList?.title}</h1>
-
-          <div class="d-flex justify-content-center">
-            <img
-              src={`/img/${currentList?.image}`}
-              class="food-image"
-              alt="food-img"
-            />
-          </div>
-
-          <div class="row mt-5 text-primary">
-            <div class="col offset-md-2">
-              <h2>Ingredients</h2>
-              <ul>
-                <li>Roti Seed Bun</li>
-                <li>100gr daging Sapi</li>
-                <li>Lada, Saus Tomat, Mayones</li>
-                <li>Timun 3 slice</li>
-                <li>Bawang Putih 3 slice</li>
-                <li>Keju 1 slice</li>
-              </ul>
+        <div className="container py-5">
+          <div className="row d-flex justify-content-center">
+            <div className="col-md-5 col-xs-12">
+              <img
+                src={recipesData.data.photo}
+                className="img-fluid rounded mb-3"
+                style={{
+                  objectFit: "cover",
+                  width: "100%",
+                  height: "50vh",
+                }}
+                alt="food-img"
+              />
+            </div>
+            <div className="col-md-5 col-xs-12">
+              <h1
+                className="text-primary"
+                style={{ textTransform: "capitalize" }}
+              >
+                {recipesData.data.tittle}
+              </h1>
+              <h4
+                className="text-primary"
+                style={{ textTransform: "capitalize" }}
+              >
+                {recipesData.data.category}
+              </h4>
+              <p className="text-primary">{recipesData.data.description}</p>
+              <div className="d-flex justify-content-center">
+                <div className="d-flex flex-row mb-3">
+                  {/* <button
+                    type="button"
+                    className={`btn ${
+                      liked ? "btn-danger" : "btn btn-outline-danger"
+                    } me-2`}
+                    style={{ width: "15vh" }}
+                    onClick={handleLikeButtonPress}
+                  >
+                    {liked ? "Liked" : "Like"}
+                  </button> */}
+                  <a
+                    className="btn btn-warning"
+                    style={{ width: "15vh" }}
+                    href={recipesData?.data?.videoLink}
+                  >
+                    <MdVideoLibrary />
+                  </a>
+                </div>
+              </div>
+              {!auth.auth && <p className="text-center">{loginMessage}</p>}
             </div>
           </div>
 
-          <div class="row mt-5 text-primary">
-            <div class="col offset-md-2">
-              <h2>Video Step</h2>
-              <div class="btn btn-warning" style={{ color: " white" }}>
-                Video Link
-              </div>
+          <div className="row mt-5 text-primary d-flex justify-content-center">
+            <div className="col-10">
+              <h2>Ingredients</h2>
+              <ul>
+                {recipesData?.data?.ingredients
+                  .split(",")
+                  .map((ingredient, index) => (
+                    <li key={index}>{ingredient.trim()}</li>
+                  ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="comment">
+        <div className="container">
+          <div className="row mt-5 text-primary d-flex justify-content-center">
+            <div className="col-10">
+              <h2>Comment</h2>
+              <Comment recipeId={recipesData.data.id} />
             </div>
           </div>
         </div>
