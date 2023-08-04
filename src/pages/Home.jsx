@@ -144,7 +144,7 @@ function App() {
                       state={{ data: item }}
                       className="btn btn-warning shadow"
                     >
-                      Go to Details
+                      Detail
                     </Link>
                   </div>
                 </div>
@@ -198,7 +198,7 @@ function App() {
                       state={{ data: item }}
                       className="btn btn-warning shadow"
                     >
-                      Go to Details
+                      Detail
                     </Link>
                   </div>
                 </div>
