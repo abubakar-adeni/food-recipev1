@@ -7,7 +7,7 @@
   <p align="center">
     <a href="https://github.com/abubakar-adeni/react-food"><strong>Explore the docs »</strong></a>
     <br />
-    <a href="https://react-food-fawn.vercel.app/">View Demo</a>
+    <a href="https://food-recipev1.vercel.app/">View Demo</a>
   </p>
 </p>
 
