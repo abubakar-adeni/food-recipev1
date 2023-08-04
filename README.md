@@ -130,4 +130,4 @@ npm run build
 
 :rocket: [`Backend Recipe Food`](https://github.com/abubakar-adeni/backend-recipes)
 
-:rocket: [`Demo Recipe Food`](https://react-food-fawn.vercel.app/)
+:rocket: [`Demo Recipe Food`](https://food-recipev1.vercel.app/)
