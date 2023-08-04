@@ -111,7 +111,7 @@ npm run build
   </tr>
   <tr>
     <td><img width="350px" src="./documentation/landingpage.png" border="0" alt="Hire" /> </td>
-    <td><img width="350px" src="./documentation/detail-recipe.png" border="0" alt="Hire" /> </td>
+    <td><img width="350px" src="./documentation/detailrecipe2.png" border="0" alt="Hire" /> </td>
     </tr>
   <tr>
     <td>Landing Page</td>
@@ -119,9 +119,11 @@ npm run build
   </tr>
   <tr> 
  <td><img width="350px" src="./documentation/my-recipe.png" border="0" alt="Hire" /> </td>
+     <td><img width="350px" src="./documentation/video.png" border="0" alt="Hire" /> </td>
     </tr>
   <tr>
     <td>My Recipe</td>
+    <td> Video Recipe</td>
 </table>
 
 # Related Project
