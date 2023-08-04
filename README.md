@@ -119,7 +119,7 @@ npm run build
   </tr>
   <tr> 
  <td><img width="350px" src="./documentation/my-recipe.png" border="0" alt="Hire" /> </td>
-     <td><img width="350px" src="./documentation/video.png" border="0" alt="Hire" /> </td>
+     <td><img width="350px" src="./documentation/ayam-bakar.png" border="0" alt="Hire" /> </td>
     </tr>
   <tr>
     <td>My Recipe</td>
