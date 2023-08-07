@@ -98,16 +98,16 @@ npm run build
     <td> <img width="350px" src="./documentation/register.png" border="0"  alt="Register" /></td>
   </tr>
   <tr>
-    <td>Login</td>
-    <td>Register</td>
+    <td>Login Page</td>
+    <td>Register Page</td>
   </tr>
   <tr>
     <td><img width="350px" src="./documentation/edit-profil.png" border="0" alt="Profile" /> </td>
     <td><img width="350px" src="./documentation/addrecipe.png" border="0" alt="Hire" /> </td>
   </tr>
    <tr>
-    <td>Edit Profile</td>
-    <td>Add Recipe</td>
+    <td>Edit Profile Page</td>
+    <td>Add Recipe Page</td>
   </tr>
   <tr>
     <td><img width="350px" src="./documentation/landingpage.png" border="0" alt="Hire" /> </td>
@@ -115,15 +115,15 @@ npm run build
     </tr>
   <tr>
     <td>Landing Page</td>
-    <td>Detail Recipe</td>
+    <td>Detail Recipe Page</td>
   </tr>
   <tr> 
  <td><img width="350px" src="./documentation/my-recipe.png" border="0" alt="Hire" /> </td>
      <td><img width="350px" src="./documentation/ayam-bakar.png" border="0" alt="Hire" /> </td>
     </tr>
   <tr>
-    <td>My Recipe</td>
-    <td> Video Recipe</td>
+    <td>My Recipe Page</td>
+    <td> Video Recipe Page</td>
 </table>
 
 # Related Project
